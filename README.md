@@ -25,11 +25,13 @@ Install-package Atom.Windows.Sdk –version 1.0.3
 Run Atom.SDK.Installer.exe to install supporting services and drivers. The services will be installed and copied to the paths provided in the config file.
  
 Don’t forget to change the following entry with your choice of Adapter name
+
  ```
 <add key="RAS_ADAPTER_NAME" value="Atom"/>
 ```
 # Getting Started with the Code
  ATOM SDK needs to be initialized with a “SecretKey” provided to you after you buy the subscription which is typically a hex-numeric literal.
+
 ```
 var atomManagerInstance = AtomManager.Initialize(“SECRETKEY_GOES_HERE”);
 ```
@@ -44,21 +46,24 @@ ATOM SDK offers 5 events to register for the ease of the developer.
 * DialError
 * Redialing
  Details of these events can be seen in the inline documentation or method summaries. You need to register these events to get notified about what’s happening behind the scenes
- ```
+ 
+```
 atomManagerInstance.Connected += atomManagerInstance _Connected;
 atomManagerInstance.DialError += atomManagerInstance _DialError;
 atomManagerInstance.Disconnected += atomManagerInstance _Disconnected;
 atomManagerInstance.StateChanged += atomManagerInstance _StateChanged;
 atomManagerInstance.Redialing += atomManagerInstance _Redialing;
- ```
+```
 Events will be registered with the respective EventArgs customized for the ease of the developer.
 ## VPN Authentication
 ATOM SDK provided 2 ways to authenticate your vpn user.
 First one is to offer VPN Credentials directly to the SDK which you may create through the Admin Panel provided by ATOM.
+
 ```
 atomManagerInstance.Credentials = new Credentials(“VPNUsername”, “VPNPassword”);
 ```
 Alternatively, if you don’t want to take hassle of creating users yourself, leave it on us and we will do the rest for you! 
+
 ```
 atomManagerInstance.UUID = “UniqueUserID”;
 ```
@@ -66,6 +71,7 @@ atomManagerInstance.UUID = “UniqueUserID”;
 You just need to provide a Unique User ID for your user e.g. any unique hash or even user’s email which you think remains consistent and unique for your user. ATOM SDK will generate VPN Account behind the scenes automatically and gets your user connected! Easy isn’t it?
 # Connection to VPN
 You need to declare an object of “VPNProperties” Class to define your connection preferences. Details of all the available properties can be seen in the inline documentation of “VPNProperties” Class. For the least, you need to give Country and Protocol with which you want to connect.
+
 ```
 var vpnProperties = new VPNProperties(Country country, Protocol protocol);
 ```
@@ -74,10 +80,12 @@ You can get the Countries list through ATOM SDK.
 var countries = atomManagerInstance.GetCountries();
 ```
 and protocols can be obtained through ATOM SDK as well.
+
 ```
 var protocols = atomManagerInstance.GetProtocols(); 
 ```
 After initializing the VPNProperties, just call Connect method of ATOM SDK. 
+
 ```
 atomManagerInstance.Connect(properties);
 ``` 
@@ -100,6 +108,7 @@ var vpnProperties = new VPNProperties(string hostName, Protocol protocol);
  
 ### Connection with Multiple Protocols (Auto-Retry Functionality)
 You can provide 3 protocols at max so ATOM SDK can attempt automatically on your behalf to get your user connected with the Secondary or Tertiary protocol if your base Protocol fails to connect. 
+
 ```
 vpnProperties.SecondaryProtocol = ProtocolObject;
 vpnProperties.TertiaryProtocol = ProtocolObject;
@@ -114,22 +123,15 @@ vpnProperties.UseOptimization= true;
 For more information, please see the inline documentation of VPNProperties Class.
 
 If you want to show your user the best location for him on your GUI then ATOM SDK have it ready for you as well! ATOM SDK has a method exposed namely “GetOptimizedCountries()” which adds a property “RoundTripTime” in the country object which has the real-time latency of all countries from your user’s location (only if ping is enabled on your user’s system and ISP doesn’t blocks any of our datacenters). You can use this property to find the best speed countries from your user’s location.
- 
 # Cancel Connection
 You can cancel connection between dialing process by calling following method.
 ```
 atomManagerInstance.Cancel();
- 
 ```
-
 # VPN Disconnection
  To disconnect, simply call the Disconnect method of AtomManager
+
 ```
 atomManagerInstance.Disconnect();
-
 ```
  
- 
- 
- 
-
